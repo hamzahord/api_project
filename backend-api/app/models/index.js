@@ -1,13 +1,18 @@
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+const { createClient } = require("@supabase/supabase-js");
+const config = require("../config/db.config.js");
+
+const supabaseUrl = config.SUPABASE_URL;
+const supabaseKey = config.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const db = {};
 
-db.mongoose = mongoose;
+db.supabase = supabase;
+db.user = require("../models/user.model.js")(supabase);
+db.role = require("../models/role.model.js")(supabase);
+db.userRole = require("../models/userRole.model.js")(supabase);
+db.article = require("../models/article.model.js")(supabase);
 
-db.user = require("./user.model");
-db.role = require("./role.model");
-
-db.ROLES = ["user", "admin"];
+db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;

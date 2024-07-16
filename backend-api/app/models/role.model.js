@@ -1,10 +1,18 @@
-const mongoose = require("mongoose");
-
-const Role = mongoose.model(
-  "Role",
-  new mongoose.Schema({
-    name: String
-  })
-);
-
-module.exports = Role;
+module.exports = (supabase) => {
+  return {
+    create: async (role) => {
+      let { data, error } = await supabase
+        .from('roles')
+        .insert([role]);
+      if (error) throw error;
+      return data;
+    },
+    findAll: async () => {
+      let { data, error } = await supabase
+        .from('roles')
+        .select('*');
+      if (error) throw error;
+      return data;
+    }
+  };
+};

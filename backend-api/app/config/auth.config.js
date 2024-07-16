@@ -1,3 +1,3 @@
 module.exports = {
-  secret: "api-backend-secret-key"
+  secret: "bezkoder-secret-key"
 };

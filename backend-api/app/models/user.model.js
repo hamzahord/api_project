@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
-
-const User = mongoose.model(
-  "User",
-  new mongoose.Schema({
-    username: String,
-    email: String,
-    password: String,
-    roles: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Role"
-      }
-    ]
-  })
-);
-
-module.exports = User;
+module.exports = (supabase) => {
+  return {
+    create: async (user) => {
+      let { data, error } = await supabase
+        .from('users')
+        .insert([user]);
+      if (error) throw error;
+      return data;
+    },
+    findAll: async () => {
+      let { data, error } = await supabase
+        .from('users')
+        .select('*');
+      if (error) throw error;
+      return data;
+    }
+  };
+};
