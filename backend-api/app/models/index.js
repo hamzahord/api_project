@@ -12,6 +12,7 @@ db.user = require("../models/user.model.js")(supabase);
 db.role = require("../models/role.model.js")(supabase);
 db.userRole = require("../models/userRole.model.js")(supabase);
 db.article = require("../models/article.model.js")(supabase);
+db.comment = require("../models/comment.model.js")(supabase);
 
 db.ROLES = ["user", "admin", "moderator"];
 
