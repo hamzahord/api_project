@@ -1,0 +1,17 @@
+version : '3.8'
+services : 
+  backend :
+    build : ./backend-api
+    container_name : api_backend
+    ports : 
+      - "5000:5000"
+    
+
+  frontend :
+    build : ./react-jwt-auth
+    container_name : api_frontend
+    ports : 
+      - "8081:8081"
+    
+    stdin_open : true
+    tty : true
