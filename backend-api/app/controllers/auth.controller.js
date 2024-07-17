@@ -101,3 +101,29 @@ exports.signin = async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 };
+
+
+exports.googleAuth = async (req, res) => {
+  try {
+    const user = req.user; // L'utilisateur est déjà créé/trouvé par passport
+    const token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400 // 24 heures
+    });
+
+    let authorities = [];
+    const roles = await Role.findAll({ where: { userId: user.id } });
+    for (let i = 0; i < roles.length; i++) {
+      authorities.push("ROLE_" + roles[i].name.toUpperCase());
+    }
+
+    res.status(200).json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      roles: authorities,
+      accessToken: token
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -86,6 +86,10 @@ class Login extends Component {
     }
   }
 
+  handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/auth/google';
+  };
+
   render() {
     return (
       <div className="col-md-12">
@@ -137,6 +141,15 @@ class Login extends Component {
                 <span>Login</span>
               </button>
             </div>
+
+            <div className="form-group">
+            <button
+              className="btn btn-danger btn-block"
+              onClick={this.handleGoogleLogin}
+            >
+              <i className="fab fa-google"></i> Se connecter avec Google
+            </button>
+          </div>
 
             {this.state.message && (
               <div className="form-group">

@@ -22,7 +22,7 @@ const AuthVerify = (props) => {
         props.logOut();
       }
     }
-  }, [location]);
+  }, [location, props]);
 
   return <div></div>;
 };

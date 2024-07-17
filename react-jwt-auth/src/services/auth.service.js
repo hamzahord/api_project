@@ -30,6 +30,16 @@ class AuthService {
     });
   }
 
+  googleLogin() {
+    return axios.get(API_URL + "google/callback", { withCredentials: true })
+      .then(response => {
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+        return response.data;
+      });
+  }
+
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;
   }
