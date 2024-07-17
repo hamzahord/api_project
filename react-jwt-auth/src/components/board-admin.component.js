@@ -1,37 +1,25 @@
 import React, { Component } from "react";
-
-import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
+import ArticleService from "../services/article.service";
+import { Link } from "react-router-dom"; // Importez Link depuis react-router-dom
 
 export default class BoardAdmin extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: ""
+      articles: []
     };
   }
 
   componentDidMount() {
-    UserService.getAdminBoard().then(
+    ArticleService.getAllArticles().then(
       response => {
         this.setState({
-          content: response.data
+          articles: response.data
         });
       },
       error => {
-        this.setState({
-          content:
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString()
-        });
-
-        if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
-        }
+        console.error("There was an error fetching the articles!", error);
       }
     );
   }
@@ -40,8 +28,24 @@ export default class BoardAdmin extends Component {
     return (
       <div className="container">
         <header className="jumbotron">
-          <h3>{this.state.content}</h3>
+          <h3>Admin Board</h3>
         </header>
+        <div>
+          {this.state.articles.length > 0 ? (
+            this.state.articles.map(article => (
+              <div key={article.id}>
+                <h4>
+                  <Link to={`/article/${article.id}`}>  {/* Utilisez Link pour inclure l'ID de l'article */}
+                    {article.title}
+                  </Link>
+                </h4>
+                <p>{article.author} - {new Date(article.date_publi).toLocaleString()}</p>
+              </div>
+            ))
+          ) : (
+            <p>No articles available</p>
+          )}
+        </div>
       </div>
     );
   }

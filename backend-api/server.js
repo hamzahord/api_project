@@ -38,11 +38,6 @@ require('./app/routes/user.routes')(app);
 require('./app/routes/article.routes')(app);
 require('./app/routes/comment.routes')(app); 
 
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
 
 io.on("connection", (socket) => {
   console.log("New client connected");
@@ -55,3 +50,13 @@ io.on("connection", (socket) => {
     console.log("Client disconnected");
   });
 });
+
+app.set('io', io);
+
+
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
+

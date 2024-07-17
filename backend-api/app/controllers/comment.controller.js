@@ -13,9 +13,12 @@ exports.createComment = async (req, res) => {
       content
     });
 
-    if (error) {
-      throw error;
-    }
+    //if (error) {
+    //  throw error;
+    //}
+
+    // Émettez l'événement WebSocket ici
+    //req.app.get('io').emit('newComment', comment);
 
     res.status(201).send(comment);
   } catch (error) {

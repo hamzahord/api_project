@@ -3,31 +3,21 @@ const supabase = db.supabase;
 
 exports.createArticle = async (req, res) => {
   try {
-    const { title, text } = req.body;
-    const { userId } = req;
-
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('id, username')
-      .eq('id', userId)
-      .single();
-
-    if (userError || !user) {
-      return res.status(404).send({ message: "User not found." });
-    }
-
-    const { data: article, error: articleError } = await supabase
+    const { data: article, error } = await supabase
       .from('articles')
-      .insert({ author_id: user.id, title, text, date_publi: new Date() })
+      .insert({
+        author_id: req.userId,
+        date_publi: new Date(),
+        title: req.body.title,
+        text: req.body.text
+      })
       .single();
 
-    if (articleError) {
-      throw articleError;
-    }
+    if (error) throw error;
 
-    res.status(201).send({ message: "Article created successfully!", article });
-  } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(201).send(article);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
 };
 
@@ -35,35 +25,28 @@ exports.getAllArticles = async (req, res) => {
   try {
     const { data: articles, error } = await supabase
       .from('articles')
-      .select('id, title, date_publi, author_id, users(username)')
-      .eq('users.id', 'author_id');
+      .select('id, title, author_id, date_publi');
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     res.status(200).send(articles);
-  } catch (error) {
-    res.status(500).send({ message: error.message });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
 };
 
 exports.getArticleById = async (req, res) => {
   try {
-    const { id } = req.params;
-
     const { data: article, error } = await supabase
       .from('articles')
-      .select('id, title, text, date_publi, author_id, users(username)')
-      .eq('id', id)
+      .select('*')
+      .eq('id', req.params.id)
       .single();
 
-    if (error || !article) {
-      return res.status(404).send({ message: "Article not found." });
-    }
+    if (error) throw error;
 
     res.status(200).send(article);
-  } catch (error) {
-    res.status(500).send({ message: error.message });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
 };

@@ -3,8 +3,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
-
 import AuthService from "../services/auth.service";
+import { withRouter } from "../common/with-router";
 
 const required = value => {
   if (!value) {
@@ -46,7 +46,7 @@ const vpassword = value => {
   }
 };
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
@@ -102,6 +102,7 @@ export default class Register extends Component {
             message: response.data.message,
             successful: true
           });
+          this.props.router.navigate("/login"); // Redirection vers la page de connexion après inscription réussie
         },
         error => {
           const resMessage =
@@ -206,3 +207,5 @@ export default class Register extends Component {
     );
   }
 }
+
+export default withRouter(Register);

@@ -7,11 +7,12 @@ import AuthService from "./services/auth.service";
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";
-import Home from "./components/home.component";
-import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
+import Profile from "./components/profile.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
+import CreateArticle from "./components/create-article.component";
+import ArticleDetail from "./components/article-detail.component";
 
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
@@ -64,14 +65,9 @@ class App extends Component {
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
-            App
+            Journal
           </Link>
           <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
 
             {showModeratorBoard && (
               <li className="nav-item">
@@ -89,13 +85,7 @@ class App extends Component {
               </li>
             )}
 
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
-                </Link>
-              </li>
-            )}
+            
           </div>
 
           {currentUser ? (
@@ -103,6 +93,11 @@ class App extends Component {
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
                   {currentUser.username}
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to={"/create-article"} className="nav-link">
+                  Create Article
                 </Link>
               </li>
               <li className="nav-item">
@@ -126,18 +121,20 @@ class App extends Component {
               </li>
             </div>
           )}
+
         </nav>
 
         <div className="container mt-3">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/create-article" element={<CreateArticle />} />
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/article/:id" element={<ArticleDetail />} />
           </Routes>
         </div>
 

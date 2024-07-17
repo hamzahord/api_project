@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
 
     if (error) throw error;
 
-    if (req.body.roles) {
+    if (req.body.roles && req.body.roles.length > 0) {
       const { data: roles, error: roleError } = await supabase
         .from('roles')
         .select('*')
@@ -31,13 +31,6 @@ exports.signup = async (req, res) => {
       const { error: userRoleError } = await supabase
         .from('user_roles')
         .insert(userRoles);
-
-      if (userRoleError) throw userRoleError;
-    } else {
-      // user role = 1 (default)
-      const { error: userRoleError } = await supabase
-        .from('user_roles')
-        .insert({ user_id: user.id, role_id: 1 });
 
       if (userRoleError) throw userRoleError;
     }
